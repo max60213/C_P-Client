@@ -3,11 +3,11 @@ plugins {
 }
 
 android {
-    namespace 'com.example.copy_passtest4'
+    namespace 'com.example.c_pcombine'
     compileSdk 32
 
     defaultConfig {
-        applicationId "com.example.copy_passtest4"
+        applicationId "com.example.c_pcombine"
         minSdk 21
         targetSdk 32
         versionCode 1

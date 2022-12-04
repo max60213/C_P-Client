@@ -12,5 +12,5 @@ dependencyResolutionManagement {
         mavenCentral()
     }
 }
-rootProject.name = "Copy_Pass test4"
+rootProject.name = "C_P Combine"
 include ':app'
