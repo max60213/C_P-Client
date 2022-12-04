@@ -18,6 +18,7 @@ import com.google.android.material.textfield.TextInputLayout;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -68,8 +69,10 @@ public class MainActivity extends AppCompatActivity {
                 ipAddress = editIp.getText().toString();
 
                 // start the Thread to connect to server
+                if (Objects.equals(message, "")){
+                    message = "Am I a joke to you?";
+                }
                 new Thread(new ClientThread(message, ipAddress)).start();
-
             }
         });
     }
