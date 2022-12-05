@@ -26,8 +26,7 @@ public class MainActivity extends AppCompatActivity {
     private Socket client;
     private PrintWriter printwriter;
     private Button button;
-    private String message1 = "";
-    private String message2;
+    private String message;
     private EditText editIp;
     private String ipAddress;
 
@@ -47,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
 
         //--------------------- Clipboard ----------------------
 
+
         clipboardManager = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
 
         //---------------------- Client -----------------------
@@ -55,14 +55,26 @@ public class MainActivity extends AppCompatActivity {
         // reference to the send button
         button = (Button) findViewById(R.id.button1);
 
-        // check if clipboard content changed
-        message1 = clipboardManager.getPrimaryClip().getItemAt(0).getText().toString();
+        // Button press event listener
+        button.setOnClickListener(new View.OnClickListener() {
 
-        while(message1 != message2){
-            message2 = message1;
-            new Thread(new ClientThread(message2, ipAddress)).start();
-        }
+            public void onClick(View v) {
+                // Send message
+                // get the text message on the text field
+                //message = textField.getText().toString();
 
+                // get the message from clipboard
+                message = clipboardManager.getPrimaryClip().getItemAt(0).getText().toString();
+                Toast.makeText(MainActivity.this, message, Toast.LENGTH_LONG).show();
+                ipAddress = editIp.getText().toString();
+
+                // start the Thread to connect to server
+                if (Objects.equals(message, "")){
+                    message = "Am I a joke to you?";
+                }
+                new Thread(new ClientThread(message, ipAddress)).start();
+            }
+        });
     }
 
     // the ClientThread class performs

@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Copy Pass</string>
+    <string name="text_field_hint">Enter IP Address</string>
+    <string name="button">Send</string>
 </resources>
