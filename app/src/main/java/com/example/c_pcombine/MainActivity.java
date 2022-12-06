@@ -4,6 +4,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.ClipboardManager;
 import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
@@ -28,6 +30,9 @@ public class MainActivity extends AppCompatActivity {
         //-------------------- IP EditText -----------------
 
         editIp = findViewById(R.id.editIP);
+            //store data using SharedPreferences
+            SharedPreferences sharedPref;
+            sharedPref = getSharedPreferences("myPref", MODE_PRIVATE);
 
         //--------------------- Clipboard ----------------------
 
@@ -39,52 +44,25 @@ public class MainActivity extends AppCompatActivity {
 
         // Button press event listener
         button.setOnClickListener(v -> {
-            String message;
-            String ipAddress;
 
-            // get the message from clipboard
-            message = clipboardManager.getPrimaryClip().getItemAt(0).getText().toString();
-            Toast.makeText(MainActivity.this, message, Toast.LENGTH_LONG).show();
+            String ipAddress;
+            String message;
             ipAddress = editIp.getText().toString();
 
+            //store IP to myPref
+            sharedPref.edit().clear();
+            sharedPref.edit().putString("IP", ipAddress).commit();
+
+            // get the message from clipboard
+            //message = clipboardManager.getPrimaryClip().getItemAt(0).getText().toString();
+            //Toast.makeText(MainActivity.this, message, Toast.LENGTH_LONG).show();
+
             // start the Thread to connect to server
-            if (Objects.equals(message, "")){
-                message = "Am I a joke to you?";
-            }
-            new Thread(new ClientThread(message, ipAddress)).start();
+//            if (Objects.equals(message, "")){
+//                message = "Am I a joke to you?";
+//            }
+
+            //new Thread(new ClientThread(message, ipAddress)).start();
         });
-    }
-
-    // the ClientThread class performs
-    // the networking operations
-    static class ClientThread implements Runnable {
-        final String message;
-        Socket client;
-        PrintWriter printwriter;
-        String ipAddress;
-
-        ClientThread(String message, String ipAddress) {
-            this.message = message;
-            this.ipAddress = ipAddress;
-        }
-        @Override
-        public void run() {
-            try {
-                // the IP and port should be correct to have a connection established
-                // Creates a stream socket and connects it to the specified port number on the named host.
-                client = new Socket(ipAddress, 8964); // connect to server
-                printwriter = new PrintWriter(client.getOutputStream(),true);
-                printwriter.write(message); // write the message to output stream
-
-                printwriter.flush();
-                printwriter.close();
-
-                // closing the connection
-                client.close();
-
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
     }
 }
