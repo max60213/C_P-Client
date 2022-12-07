@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.Re" />
 
     <application
         android:allowBackup="true"
@@ -14,18 +15,26 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.C_PCombine"
         tools:targetApi="31">
+        <service
+            android:name=".MyQSTileService"
+            android:label="@string/my_tile_label"
+            android:icon="@drawable/tile_icon"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
+            </intent-filter>
+        </service>
         <activity
             android:name=".ProcessTextActivity"
             android:exported="true"
-            android:label="@string/process_text_action_name">
+            android:label="@string/process_text_action_name"
+            android:theme="@android:style/Theme.NoDisplay">
             <intent-filter>
                 <action android:name="android.intent.action.PROCESS_TEXT" />
                 <category android:name="android.intent.category.DEFAULT" />
-                <data android:mimeType="text/plain" />
+                <data android:mimeType="text/*" />
             </intent-filter>
-            <meta-data
-                android:name="android.app.lib_name"
-                android:value="" />
         </activity>
         <activity
             android:name=".MainActivity"

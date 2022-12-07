@@ -6,7 +6,7 @@ import java.net.Socket;
 
 public class ClientThread implements Runnable {
 
-    final String message;
+    String message;
     Socket client;
     PrintWriter printwriter;
     String ipAddress;
@@ -17,6 +17,10 @@ public class ClientThread implements Runnable {
     }
 
     public void run() {
+
+        //convert to utf-8
+        message = StringFormatter.convertStringToUTF8(message);
+
         try {
             // the IP and port should be correct to have a connection established
             // Creates a stream socket and connects it to the specified port number on the named host.

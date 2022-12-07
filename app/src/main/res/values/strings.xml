@@ -1,6 +1,8 @@
 <resources>
     <string name="app_name">Copy Pass</string>
     <string name="text_field_hint">Enter IP Address</string>
-    <string name="button">Send</string>
+    <string name="button">Set</string>
     <string name="process_text_action_name">Pass</string>
+    <string name="my_tile_label">Pass</string>
+    <string name="my_tile_description">Send copied data</string>
 </resources>

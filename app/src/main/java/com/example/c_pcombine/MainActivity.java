@@ -4,17 +4,11 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.ClipboardManager;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
-
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.net.Socket;
-import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -24,45 +18,49 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         Button button;
+        Button button2;
         EditText editIp;
-        ClipboardManager clipboardManager;
 
         //-------------------- IP EditText -----------------
 
         editIp = findViewById(R.id.editIP);
-            //store data using SharedPreferences
-            SharedPreferences sharedPref;
-            sharedPref = getSharedPreferences("myPref", MODE_PRIVATE);
-
-        //--------------------- Clipboard ----------------------
-
-        clipboardManager = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
 
         //---------------------- Client -----------------------
-        // reference to the send button
+        //Reference to the send button
         button = findViewById(R.id.button1);
+        button2 = findViewById(R.id.button2);
 
-        // Button press event listener
+        //Button press event listener
         button.setOnClickListener(v -> {
 
             String ipAddress;
-            String message;
             ipAddress = editIp.getText().toString();
 
-            //store IP to myPref
-            sharedPref.edit().clear();
-            sharedPref.edit().putString("IP", ipAddress).commit();
+            //Store data using SharedPreferences
+            SharedPreferences sharedPref;
+            sharedPref = getSharedPreferences("myPref", MODE_PRIVATE);
+            sharedPref.edit().putString("IP", ipAddress).apply();
 
-            // get the message from clipboard
-            //message = clipboardManager.getPrimaryClip().getItemAt(0).getText().toString();
-            //Toast.makeText(MainActivity.this, message, Toast.LENGTH_LONG).show();
+            Toast.makeText(MainActivity.this, "Done, you can close me now", Toast.LENGTH_SHORT).show();
 
-            // start the Thread to connect to server
-//            if (Objects.equals(message, "")){
-//                message = "Am I a joke to you?";
-//            }
+        });
 
-            //new Thread(new ClientThread(message, ipAddress)).start();
+        //Send Manually button
+        button2.setOnClickListener(u ->{
+            //Clipboard
+            ClipboardManager clipboardManager;
+            String text;
+            clipboardManager = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+
+            //Get IP from SharedPreferences
+            SharedPreferences sharedPref = getSharedPreferences("myPref", MODE_PRIVATE);
+            String ipAddress = sharedPref.getString("IP", "0.0.0.0");
+
+            //Get text from clipboard
+            text = clipboardManager.getPrimaryClip().getItemAt(0).getText().toString();
+            Toast.makeText(MainActivity.this, text, Toast.LENGTH_LONG).show();
+
+            new Thread(new ClientThread(text, ipAddress)).start();
         });
     }
 }
